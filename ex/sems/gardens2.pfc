@@ -1,47 +1,43 @@
+(* semaphore solution to Ornamental Gardens problem *)
 program gardens2;
-(* 
-semaphore solution to Ornamental 
-Gardens problem
-*)
 
-var 
-  count: integer;
-  mutex: semaphore;
+  var
+    count: integer;
+    mutex: semaphore;
 
-process turnstile1;
-var 
-  loop: integer;
-begin
-  for loop := 1 to 20 do
-    begin
-    wait(mutex);
-    count := count + 1;
-    signal(mutex)
+  process turnstile1;
+
+    var
+      loop: integer;
+
+  begin
+    for loop := 1 to 20 do begin
+      wait(mutex);
+      count := count + 1;
+      signal(mutex)
     end
-end;  (* turnstile1 *)
+  end;  (* turnstile1 *)
 
 
-process turnstile2;
-var
-  loop: integer;
-begin
-  for loop := 1 to 20 do
-    begin
-    wait(mutex);
-    count := count + 1;
-    signal(mutex)
+  process turnstile2;
+
+    var
+      loop: integer;
+
+  begin
+    for loop := 1 to 20 do begin
+      wait(mutex);
+      count := count + 1;
+      signal(mutex)
     end
-end;  (* turnstile2 *)
-
-
-
+  end;  (* turnstile2 *)
 
 begin
   count := 0;
-  initial(mutex,1);
+  initial(mutex, 1);
   cobegin
     turnstile1;
     turnstile2
   coend;
-  writeln('Total admitted: ',count)
+  writeln('Total admitted: ', count)
 end.

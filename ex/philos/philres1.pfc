@@ -1,21 +1,15 @@
+(* Dining Philosophers: resource version *)
 program philres1;
 
-(* 
-
-Dining Philosophers:  resource version
-
-*)
-
-  var 
+  var
     j, num: integer;
 
-
   resource forkcontrol;
-  export 
-    getforks,
-    putforks;
 
-    var 
+    export
+      getforks, putforks;
+
+    var
       forks: array [0..4] of integer;
       i: integer;
       barrier1: boolean;
@@ -24,24 +18,23 @@ Dining Philosophers:  resource version
     guarded procedure waiting2(i: integer) when barrier1; forward;
 
     guarded procedure getforks(i: integer) when true;
-
     begin
       if forks[i] <> 2 then
         if barrier1 then
           requeue waiting1(i)
         else
           requeue waiting2(i);
-      forks[(i+1) mod 5] := forks[(i+1) mod 5] - 1;
-      forks[(i+4) mod 5] := forks[(i+4) mod 5] - 1;
-      writeln('Philosopher ',i,' eats')
+
+      forks[(i + 1) mod 5] := forks[(i + 1) mod 5] - 1;
+      forks[(i + 4) mod 5] := forks[(i + 4) mod 5] - 1;
+      writeln('Philosopher ', i, ' eats')
     end;  (* getforks *)
 
     procedure putforks(i: integer);
-
     begin
-      writeln('Philosopher ',i,' finishes');
-      forks[(i+1) mod 5] := forks[(i+1) mod 5] + 1;
-      forks[(i+4) mod 5] := forks[(i+4) mod 5] + 1;
+      writeln('Philosopher ', i, ' finishes');
+      forks[(i + 1) mod 5] := forks[(i + 1) mod 5] + 1;
+      forks[(i + 4) mod 5] := forks[(i + 4) mod 5] + 1;
       barrier1 := not barrier1
     end;  (* putforks *)
 
@@ -62,22 +55,18 @@ Dining Philosophers:  resource version
   end;  (* forkcontrol *)
 
   procedure think;
-
   begin
     null
   end;  (* think *)
 
   procedure eat(n: integer);
-
   begin
     forkcontrol.getforks(n);
     sleep(1);
     forkcontrol.putforks(n)
   end;  (* eat *)
 
-
   process type philtype(n: integer);
-
   begin
     repeat
       think;
@@ -86,8 +75,7 @@ Dining Philosophers:  resource version
   end;  (* philosopher *)
 
   var
-    philosopher: array[0..4] of philtype;
-
+    philosopher: array [0..4] of philtype;
 
 begin  (* main *)
   cobegin
@@ -95,5 +83,3 @@ begin  (* main *)
       philosopher[num](num)
   coend
 end.
-
-

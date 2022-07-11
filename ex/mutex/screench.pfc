@@ -1,43 +1,42 @@
+(* Mutual exclusion using channels *)
 program screenchan;
 
-(*
+  const
+    max = 5;
 
-Mutual exclusion using channels
+  type
+    link = channel of synchronous;
 
-*)
+  var
+    coms: array [1..max] of link;
 
-const
-  max = 5;
-type
-  link = channel of synchronous;
-var
-  coms: array[1..max] of link;
+  process type clienttype(n: integer);
+  begin
+      coms[n] ! any
+  end;
 
-process type clienttype(n: integer);
-begin
-    coms[n] ! any
-end;
+  var
+    clients: array [1..max] of clienttype;
 
-var
-  clients:  array[1..max] of clienttype;
+  process screen;
 
-process screen;
-var
-  i: integer;
-begin
-  repeat
-    select
+    var
+      i: integer;
+
+  begin
+    repeat
+      select
       for i := 1 to max replicate
         coms[i] ? any;
-        writeln('Message from process ',i);
-    or
-      terminate
-    end
-  forever
-end;
+        writeln('Message from process ', i);
+      or
+        terminate
+      end
+    forever
+  end;
 
-var
-  i: integer;
+  var
+    i: integer;
 
 begin
   cobegin

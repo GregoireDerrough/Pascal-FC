@@ -1,79 +1,73 @@
+(* Hoare's (1974) demonstration *)
 program ALARMCLOCK;
-(*
-Hoare's (1974) demonstration
-*)
 
-const
-  PMAX = 3;
+  const
+    PMAX = 3;
 
-monitor ALARM;
-export
-  WAKEUP, TICK;
-var
-  NOW: integer;
-  WAKE: condition;
+  monitor ALARM;
 
-procedure WAKEUP(N: integer);
-var
-  ALARMCALL: integer;
-begin
-  ALARMCALL := NOW + N;
-  while NOW < ALARMCALL do
+    export
+      WAKEUP, TICK;
+
+    var
+      NOW: integer;
+      WAKE: condition;
+
+    procedure WAKEUP(N: integer);
+
+      var
+        ALARMCALL: integer;
+
     begin
-    delay(WAKE);
-    resume(WAKE);
-    end
-end;  (* WAKEUP *)
+      ALARMCALL := NOW + N;
+      while NOW < ALARMCALL do begin
+        delay(WAKE);
+        resume(WAKE);
+      end
+    end;  (* WAKEUP *)
 
+    procedure TICK;
+    begin
+      NOW := NOW + 1;
+      resume(WAKE)
+    end;  (* TICK *)
 
-procedure TICK;
-begin
-  NOW := NOW + 1;
-  resume(WAKE)
-end;  (* TICK *)
+  begin  (* body *)
+    NOW := 0
+  end;  (* ALARM *)
 
+  monitor SCREEN;
 
-begin  (* body *)
-  NOW := 0
-end;  (* ALARM *)
+    export
+      PRINT;
 
+    procedure PRINT(N: integer);
+    begin
+      writeln('Process ', N:1, ' aWAKEs')
+    end;  (* PRINT *)
 
-monitor SCREEN;
-export
-  PRINT;
-procedure PRINT(N: integer);
-begin
-  writeln('Process ',N:1,' aWAKEs')
-end;  (* PRINT *)
+  end;  (* SCREEN *)
 
-end;  (* SCREEN *)
+  (* provides the clock "ticks" *)
+  process DRIVER;
+  begin
+    repeat
+      sleep(1);
+      ALARM.TICK
+    forever
+  end;  (* DRIVER *)
 
+  process type CLIENTTYPE(N: integer);
+  begin
+    repeat
+      ALARM.WAKEUP(n);
+      SCREEN.PRINT(N)
+    forever
+  end;  (* CLIENTTYPE *)
 
-
-
-process DRIVER;
-(* provides the clock "ticks" *)
-begin
-  repeat
-    sleep(1);
-    ALARM.TICK
-  forever
-end;  (* DRIVER *)
-
-
-process type CLIENTTYPE(N: integer);
-
-begin
-  repeat
-    ALARM.WAKEUP(n);
-    SCREEN.PRINT(N)
-  forever
-end;  (* CLIENTTYPE *)
-
-
-var
-  SLEEPERS:  array[1..PMAX] of CLIENTTYPE;
-  PLOOP: integer;
+  var
+    SLEEPERS: array [1..PMAX] of CLIENTTYPE;
+    PLOOP: integer;
 
 begin
   cobegin

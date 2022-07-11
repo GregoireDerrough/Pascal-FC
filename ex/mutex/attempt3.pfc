@@ -1,51 +1,46 @@
-
 program attempt3;
 
-var 
-	p1requests, p2requests: boolean;
-	shared: integer;
+  var
+    p1requests, p2requests: boolean;
+    shared: integer;
 
-process one;
+  process one;
 
-var
-	loop: integer;
+    var
+      loop: integer;
 
-begin
-	for loop := 1 to 20 do
-		begin
-		p1requests := true;
-		while p2requests do
-			null;
-		shared := shared + 1;
-		p1requests :=false
-		end
-end;  (* one *)
+  begin
+    for loop := 1 to 20 do begin
+      p1requests := true;
+      while p2requests do
+        null;
 
+      shared := shared + 1;
+      p1requests :=false
+    end
+  end;  (* one *)
 
-process two;
+  process two;
 
-var
-	loop: integer;
+    var
+      loop: integer;
 
-begin
-	for loop := 1 to 20 do
-		begin
-		p2requests := true;
-		while p1requests do
-			null;
-		shared := shared + 1;
-		p2requests := false
-		end
-end;  (* two *)
+  begin
+    for loop := 1 to 20 do begin
+      p2requests := true;
+      while p1requests do
+        null;
 
+      shared := shared + 1;
+      p2requests := false
+    end
+  end;  (* two *)
 
 begin
-	shared := 0;
-	cobegin
-		one;
-		two
-	coend;
-	writeln(shared)
+  shared := 0;
+  cobegin
+    one;
+    two
+  coend;
+  writeln(shared)
 end.
-
-

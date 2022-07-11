@@ -1,87 +1,73 @@
- program bakery;
+(* Mutual exclusion with Lamport's bakery algorithm *)
+program bakery;
 
-(*
+  const
+    nprocs = 5;
 
-Mutual exclusion with Lamport's bakery algorithm
+  var
+    ticket: array [1..nprocs] of integer;
+    choosing: array [1..nprocs] of boolean;
+    loop: integer;
+    count: integer;
 
-*)
+  process type turntype(thisproc: integer);
 
-const
-	nprocs = 5;
+    var
+      otherproc, loop: integer;
 
-var
-	ticket: array[1..nprocs] of integer;
-	choosing: array[1..nprocs] of boolean;
-	loop: integer;
-	count: integer;
+    function max: integer;
 
+      var
+        i, largest: integer;
 
-process type turntype(thisproc: integer);
+    begin
+      largest := 0;
+      for i := 1 to nprocs do
+        if ticket[i] > largest then
+          largest := ticket[i];
 
-var
-	otherproc, loop: integer;
+      max := largest + 1
+    end;  (* max *)
 
-	function max: integer;
+    function favoured(i, j: integer): boolean;
+    begin
+      if (ticket[i] = 0) or (ticket[i] > ticket[j]) then
+        favoured := false
+      else if ticket[i] < ticket[j] then
+        favoured := true
+      else
+        favoured := (i < j)
+    end;  (* favoured *)
 
-	var
-		i, largest: integer;
-	begin
-		largest := 0;
-		for i := 1 to nprocs do
-			if ticket[i] > largest then
-				largest := ticket[i];
-		max := largest + 1
-	end;  (* max *)
+  begin
+    for loop := 1 to 20 do begin
+      choosing[thisproc] := true;
+      ticket[thisproc] := max;
+      choosing[thisproc] := false;
+      for otherproc := 1 to nprocs do begin
+        while choosing[otherproc] do
+          null;
 
+        while favoured(otherproc, thisproc) do
+          null;
+      end;
+      count := count + 1;
+      ticket[thisproc] := 0
+    end
+  end;  (* turntype *)
 
-	function favoured(i,  j: integer): boolean;
-
-	begin
-		if (ticket[i] = 0) or (ticket[i] > ticket[j])  then
-			favoured := false
-		else
-			if ticket[i] < ticket[j] then
-				favoured := true
-			else
-				favoured := (i < j)
-	end;  (* favoured *)
-
-
-
-begin
-	for loop := 1 to 20 do
-		begin
-		choosing[thisproc] := true;
-		ticket[thisproc] := max;
-		choosing[thisproc] := false;
-		for otherproc := 1 to nprocs do
-			begin
-			while choosing[otherproc] do
-				null;
-			while favoured(otherproc, thisproc) do
-				null;
-			end;
-		count := count + 1;
-		ticket[thisproc] := 0
-		end
-end;  (* turntype *)
-
-
-var
-	turnstile: array[1..nprocs] of turntype;
-
+  var
+    turnstile: array [1..nprocs] of turntype;
 
 begin
-	count := 0;
-	for loop := 1 to nprocs do
-		begin
-		ticket[loop] := 0;
-		choosing[loop] := false;
-		end;
-	cobegin
-		for loop := 1 to nprocs do
-			turnstile[loop](loop)
-	coend;
-	writeln('Total admitted:  ',count:1)
+  count := 0;
+  for loop := 1 to nprocs do begin
+    ticket[loop] := 0;
+    choosing[loop] := false;
+  end;
+  cobegin
+    for loop := 1 to nprocs do
+      turnstile[loop](loop)
+  coend;
+  writeln('Total admitted:  ', count:1)
 end.
-
