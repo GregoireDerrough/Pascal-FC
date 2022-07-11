@@ -1,0 +1,4 @@
+#.exe files
+.exe
+
+#TODO: once I get this up and running, add files outputted by the compiler-interpreter to this

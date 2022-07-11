@@ -1,3 +1,4 @@
+REM TODO: need to modify this once I rework the compiler and interpreter
 	@if exist objfile del objfile
 	@if "%2"=="" goto one
 	@if "%1"=="-uf" goto unfair
@@ -21,4 +22,3 @@
 	@if not exist objfile goto end
 	@pint objfile pmdfile
 :end
-
