@@ -127,7 +127,7 @@ program pint(objfile, pmdfile, input, output);
       enums, bitsets, protvars, protq
     );
     typset = set of types;
-    fnametype = packed array [1..30] of char;
+    fnametype = packed array[1..30] of char;
     order = packed record
       f: opcode;
       x: -lmax..+lmax;
@@ -135,14 +135,14 @@ program pint(objfile, pmdfile, input, output);
       instyp: types;
       line: integer
     end;
-    orderarray = array [0..cmax] of order;
+    orderarray = array[0..cmax] of order;
     objorder = packed record
       f: 0..omax;
       x: -lmax..lmax;
       y: integer;
       l: integer
     end;
-    objorderarray = array [0..cmax] of objorder;
+    objorderarray = array[0..cmax] of objorder;
     tabrec = packed record
       name: alfa;
       link: index;
@@ -154,19 +154,19 @@ program pint(objfile, pmdfile, input, output);
       taddr: integer;
       auxref: index
     end;
-    tabarray = array [0..tmax] of tabrec;
+    tabarray = array[0..tmax] of tabrec;
     atabrec = packed record
       inxtyp, eltyp: types;
       inxref, elref, low, high, elsize, size: index;
     end;
-    atabarray = array [1..amax] of atabrec;
+    atabarray = array[1..amax] of atabrec;
     btabrec = packed record
       last, lastpar, psize, vsize: index;
       tabptr: 0..tmax
     end;
-    btabarray = array [1..bmax] of btabrec;
-    stabarray = packed array [0..smax] of char;
-    realarray = array [1..rmax] of real;
+    btabarray = array[1..bmax] of btabrec;
+    stabarray = packed array[0..smax] of char;
+    realarray = array[1..rmax] of real;
     intabrec = packed record
       tp: types;
       lv: 0..lmax;
@@ -175,7 +175,7 @@ program pint(objfile, pmdfile, input, output);
       off: integer;
       tabref: integer
     end;
-    intabarray = array [1..intermax] of intabrec;
+    intabarray = array[1..intermax] of intabrec;
 
     (* unixtypes.i *)
     (* Pascal-FC "universal" compiler system *)
@@ -229,11 +229,11 @@ program pint(objfile, pmdfile, input, output);
     lncnt, chrcnt: integer;
     h1, h2, h3, h4: integer;
     foundcall: boolean;   (* used in select (code 64) *)
-    s: array [1..stmax] of stackrec;
-    ptab: array [ptype] of
+    s: array[1..stmax] of stackrec;
+    ptab: array[ptype] of
       record
         t, b, pc, stackbase, stacksize: integer;
-        display: array [1..lmax] of integer;
+        display: array[1..lmax] of integer;
         suspend: integer;
         chans: integer;
         repindex: integer;
@@ -254,7 +254,7 @@ program pint(objfile, pmdfile, input, output);
     (* I declare them to be UnixTimeType (lognints) *)
     now, last: UnixTimeType;
     procqueue: record
-      proclist: array [1..pmax] of
+      proclist: array[1..pmax] of
         record
           proc: ptype;
           link: ptype
@@ -1792,702 +1792,564 @@ program pint(objfile, pmdfile, input, output);
             t := t - 1;
             s[t].i := btoi(s[t].r >= s[t + 1].r)
           end;
-            45: begin
-                  t := t - 1;
-                   s[t].i := btoi(s[t].i = s[t + 1].i);
-               end;
-            46: begin
-                  t := t - 1; s[t].i := btoi(s[t].i <> s[t + 1].i);
-               end;
-            47: begin
-                  t := t -1; s[t].i := btoi(s[t].i < s[t+1].i);
-               end;
-
-            48:
-               begin
-                  t := t -1; s[t].i := btoi(s[t].i <= s[t+1].i);
-               end;
-
-            49:
-               begin
-                  t := t -1; s[t].i := btoi(s[t].i > s[t+1].i);
-               end;
-
-            50:
-               begin
-                  t := t -1; s[t].i := btoi(s[t].i >= s[t+1].i);
-               end;
-
-            51:
-               begin
-                  t := t -1; s[t].i := btoi(itob(s[t].i) or itob(s[t+1].i));
-               end;
-
-            52:
-               begin
-               t := t -1;
-          if ((s[t].i > 0) and (s[t+1].i > 0)) or
-            ((s[t].i < 0) and (s[t+1].i < 0)) then
-            if (maxint - abs(s[t].i)) < abs(s[t+1].i) then
-              ps := ovchk;
-          if ps <> ovchk then
-            s[t].i := s[t].i + s[t+1].i;
-               end;
-
-            53:
-               begin
-               t := t -1;
-          if ((s[t].i < 0) and (s[t+1].i > 0)) or
-            ((s[t].i > 0) and (s[t+1].i < 0)) then
-            if  (maxint - abs(s[t].i)) < abs(s[t+1].i) then
-              ps := ovchk;
-          if ps <> ovchk then
-            s[t].i := s[t].i - s[t+1].i;
-               end;
-
-        54:
-          begin
-          t := t - 1;
-          if ((s[t].r > 0.0) and (s[t+1].r > 0.0)) or
-            ((s[t].r < 0.0) and (s[t+1].r < 0.0)) then
-              if (realmax - abs(s[t].r)) < abs(s[t+1].r) then
+          45: begin
+            t := t - 1;
+            s[t].i := btoi(s[t].i = s[t + 1].i);
+          end;
+          46: begin
+            t := t - 1;
+            s[t].i := btoi(s[t].i <> s[t + 1].i);
+          end;
+          47: begin
+            t := t - 1;
+            s[t].i := btoi(s[t].i < s[t + 1].i);
+          end;
+          48: begin
+            t := t - 1;
+            s[t].i := btoi(s[t].i <= s[t + 1].i);
+          end;
+          49: begin
+            t := t - 1;
+            s[t].i := btoi(s[t].i > s[t + 1].i);
+          end;
+          50: begin
+            t := t - 1;
+            s[t].i := btoi(s[t].i >= s[t + 1].i);
+          end;
+          51: begin
+            t := t - 1;
+            s[t].i := btoi(itob(s[t].i) or itob(s[t + 1].i));
+          end;
+          52: begin
+            t := t - 1;
+            if ((s[t].i > 0) and (s[t + 1].i > 0)) or ((s[t].i < 0) and (s[t + 1].i < 0)) then
+              if (maxint - abs(s[t].i)) < abs(s[t + 1].i) then
                 ps := ovchk;
-          if ps <>  ovchk then
-            s[t].r := s[t].r + s[t+1].r
-          end;
 
-        55:
-          begin
-          t := t - 1;
-          if ((s[t].r > 0.0) and (s[t+1].r < 0.0)) or
-                  ((s[t].r < 0.0) and (s[t+1].r > 0.0)) then
-                    if (realmax - abs(s[t].r)) < abs(s[t+1].r) then
+            if ps <> ovchk then
+              s[t].i := s[t].i + s[t + 1].i;
+          end;
+          53: begin
+            t := t - 1;
+            if ((s[t].i < 0) and (s[t + 1].i > 0)) or ((s[t].i > 0) and (s[t + 1].i < 0)) then
+              if (maxint - abs(s[t].i)) < abs(s[t + 1].i) then
                 ps := ovchk;
-          if ps <>  ovchk then
-            s[t].r := s[t].r - s[t+1].r
+
+            if ps <> ovchk then
+              s[t].i := s[t].i - s[t + 1].i;
           end;
+          54: begin
+            t := t - 1;
+            if ((s[t].r > 0.0) and (s[t + 1].r > 0.0)) or ((s[t].r < 0.0) and (s[t + 1].r < 0.0)) then
+              if (realmax - abs(s[t].r)) < abs(s[t + 1].r) then
+                ps := ovchk;
 
-            56:
-               begin
-                  t := t -1; s[t].i := btoi(itob(s[t].i) and itob(s[t+1].i));
-               end;
-
-            57:
-               begin
-               t := t -1;
-          if s[t].i <> 0 then
-            if (maxint div abs(s[t].i)) < abs(s[t+1].i) then
-              ps := ovchk;
-          if ps <> ovchk then
-            s[t].i := s[t].i * s[t+1].i;
-               end;
-
-            58:
-               begin
-                  t := t -1;
-                  if s[t+1].i = 0
-                  then ps := divchk
-                  else
-                     s[t].i := s[t].i div s[t+1].i;
-               end;
-
-            59:
-               begin
-                  t := t -1;
-                  if s[t+1].i = 0
-                  then ps := divchk
-                  else
-                     s[t].i := s[t].i mod s[t+1].i;
-               end;
-
-        60:
-          begin
-          t := t - 1;
-          if (abs(s[t].r) > 1.0) and (abs(s[t+1].r) > 1.0) then
-            if (realmax/abs(s[t].r)) < abs(s[t+1].r) then
-              ps := ovchk;
-          if ps <> ovchk then
-            s[t].r := s[t].r * s[t+1].r
+            if ps <>  ovchk then
+              s[t].r := s[t].r + s[t + 1].r
           end;
+          55: begin
+            t := t - 1;
+            if ((s[t].r > 0.0) and (s[t + 1].r < 0.0)) or ((s[t].r < 0.0) and (s[t + 1].r > 0.0)) then
+              if (realmax - abs(s[t].r)) < abs(s[t + 1].r) then
+                ps := ovchk;
 
-        61:
-          begin
-          t := t - 1;
-          if s[t+1].r < minreal then
-            ps := divchk
-          else
-            s[t].r := s[t].r / s[t+1].r
+            if ps <>  ovchk then
+              s[t].r := s[t].r - s[t + 1].r
           end;
+          56: begin
+            t := t - 1;
+            s[t].i := btoi(itob(s[t].i) and itob(s[t + 1].i));
+          end;
+          57: begin
+            t := t - 1;
+            if s[t].i <> 0 then
+              if (maxint div abs(s[t].i)) < abs(s[t + 1].i) then
+                ps := ovchk;
 
+            if ps <> ovchk then
+              s[t].i := s[t].i * s[t + 1].i;
+          end;
+          58: begin
+            t := t - 1;
+            if s[t + 1].i = 0 then
+              ps := divchk
+            else
+              s[t].i := s[t].i div s[t + 1].i;
+          end;
+          59: begin
+            t := t - 1;
+            if s[t+1].i = 0 then
+              ps := divchk
+            else
+              s[t].i := s[t].i mod s[t + 1].i;
+          end;
+          60: begin
+            t := t - 1;
+            if (abs(s[t].r) > 1.0) and (abs(s[t + 1].r) > 1.0) then
+              if (realmax/abs(s[t].r)) < abs(s[t + 1].r) then
+                ps := ovchk;
 
-            62:
-               if eof(input)
-               then ps := redchk
-               else readln;
-
-            63:
-               begin
-                  writeln; chrcnt := 0
-               end;
-
-            64:
-               begin
-               h1 := t;
-               h2 := 0;
-               while s[h1].i <> -1 do
-                  begin
-                  h1 := h1 - sfsize;
-                  h2 := h2 + 1
-                  end;  (* h2 is now the number of open guards *)
-               if h2=0 then
-                  begin
-                  if ir.y=0 then
-                     ps:=guardchk  (* closed guards and no else/terminate *)
-                  else
-                     if ir.y=1 then
-                        termstate:=true
-                  end
-               else
-                  begin  (* channels/entries to check *)
-                  if ir.x=0 then
-                     h3 := trunc(random*h2)  (* arbitrary choice *)
-                  else
-                     h3:=h2-1;  (* priority select *)
-                  h4 := t-(sfsize-1)-(h3*sfsize);  (* h4 points to bottom of "frame" *)
-                  h1 := 1;
-            foundcall := false;
-                  while not foundcall and (h1 <=  h2) do
-                     begin
-              if s[h4].i = 0 then
-                begin (* timeout alternative *)
-                if s[h4+3].i < 0 then
-                  s[h4+3].i := sysclock
-                else
-                  s[h4+3].i := s[h4+3].i + sysclock;
-                if (wakeup = 0) or (s[h4+3].i < wakeup) then
-                  begin
-                  wakeup := s[h4+3].i;
-                  wakestart := s[h4+4].i
-                  end;
-                      h3 := (h3+1) mod h2;
-                      h4 := t - (sfsize-1) - (h3*sfsize);
-                      h1 := h1 + 1
-                end
+            if ps <> ovchk then
+              s[t].r := s[t].r * s[t + 1].r
+          end;
+          61: begin
+            t := t - 1;
+            if s[t + 1].r < minreal then
+              ps := divchk
+            else
+              s[t].r := s[t].r / s[t + 1].r
+          end;
+          62:
+            if eof(input) then
+              ps := redchk
+            else
+              readln;
+          63: begin
+            writeln;
+            chrcnt := 0
+          end;
+          64: begin
+            h1 := t;
+            h2 := 0;
+            while s[h1].i <> -1 do begin
+              h1 := h1 - sfsize;
+              h2 := h2 + 1
+            end;  (* h2 is now the number of open guards *)
+            if h2 = 0 then begin
+              if ir.y = 0 then
+                ps := guardchk  (* closed guards and no else/terminate *)
+              else if ir.y = 1 then
+                termstate := true
+            end
+            else begin  (* channels/entries to check *)
+              if ir.x = 0 then
+                h3 := trunc(random * h2)  (* arbitrary choice *)
               else
-                if s[s[h4].i].i <> 0 then
+                h3 := h2 - 1;  (* priority select *)
+
+              h4 := t - (sfsize - 1) - (h3 * sfsize);  (* h4 points to bottom of "frame" *)
+              h1 := 1;
+              foundcall := false;
+              while not foundcall and (h1 <= h2) do begin
+                if s[h4].i = 0 then begin (* timeout alternative *)
+                  if s[h4 + 3].i < 0 then
+                    s[h4 + 3].i := sysclock
+                  else
+                    s[h4 + 3].i := s[h4 + 3].i + sysclock;
+
+                  if (wakeup = 0) or (s[h4 + 3].i < wakeup) then begin
+                    wakeup := s[h4 + 3].i;
+                    wakestart := s[h4 + 4].i
+                  end;
+                  h3 := (h3 + 1) mod h2;
+                  h4 := t - (sfsize - 1) - (h3 * sfsize);
+                  h1 := h1 + 1
+                end
+                else if s[s[h4].i].i <> 0 then
                   foundcall := true
-                else
-                  begin
-                        h3 := (h3+1) mod h2;
-                        h4 := t - (sfsize-1) - (h3*sfsize);
-                        h1 := h1 + 1
-                  end
-                     end;  (* while not foundcall ... *)
-                  if not foundcall then  (* no channel/entry has a call *)
-                     begin
-                     if ir.y <> 2 then  (* ie, if no else part *)
-                        begin  (* sleep on all channels *)
-                        if ir.y=1 then termstate:=true;
-                        h1 := t - (sfsize-1) - ((h2-1)*sfsize);
-                chans := h1;
-                        for h3 := 1 to h2 do
-                           begin
-                           h4 := s[h1].i;  (* h4 points to channel/entry *)
-                  if h4 <> 0 then (* 0 means timeout *)
-                    begin
-                            if s[h1+2].i=2 then
-                                s[h4].i := -s[h1+1].i (* query sleep *)
-                            else
-                                if s[h1+2].i=0 then
-                                  s[h4].i := h1+1
-                                else
-                                  if s[h1+2].i = 1 then
-                                      s[h4] := s[h1+1]  (* shriek sleep *)
-                                  else
-                                      s[h4].i := -1;  (* entry sleep *)
-                            s[h4+1]:= s[h1+4];  (* wake address *)
-                            s[h4+2].i:=curpr
+                else begin
+                  h3 := (h3 + 1) mod h2;
+                  h4 := t - (sfsize - 1) - (h3 * sfsize);
+                  h1 := h1 + 1
+                end
+              end;  (* while not foundcall ... *)
+              if not foundcall then begin  (* no channel/entry has a call *)
+                if ir.y <> 2 then begin  (* ie, if no else part sleep on all channels *)
+                  if ir.y = 1 then
+                    termstate := true;
+
+                  h1 := t - (sfsize - 1) - ((h2 - 1) * sfsize);
+                  chans := h1;
+                  for h3 := 1 to h2 do begin
+                    h4 := s[h1].i;  (* h4 points to channel/entry *)
+                    if h4 <> 0 then begin (* 0 means timeout *)
+                      if s[h1 + 2].i = 2 then
+                        s[h4].i := -s[h1 + 1].i (* query sleep *)
+                      else if s[h1 + 2].i = 0 then
+                        s[h4].i := h1 + 1
+                      else if s[h1 + 2].i = 1 then
+                        s[h4] := s[h1 + 1]  (* shriek sleep *)
+                      else
+                        s[h4].i := -1;  (* entry sleep *)
+
+                      s[h4 + 1] := s[h1 + 4];  (* wake address *)
+                      s[h4 + 2].i := curpr
                     end; (* if h4 <> 0 *)
-                           h1:=h1+sfsize
-                           end;  (* for loop *)
-                        stepcount := 0;
-                        suspend:=-h2;
-                onselect := true;
-                if wakeup <> 0 then
-                  joineventq(wakeup)
-                        end (* sleep on open-guard channels/entries *)
-                     end (* no call *)
-                  else
-                     begin  (* someone is waiting *)
-              wakeup := 0;
-              wakestart := 0;
-                     h1 := s[h4].i;  (* h1 points to channel/entry *)
-                     if s[h4+2].i in [0..2] then
-                        begin  (* channel rendezvous *)
-                        if ((s[h1].i<0) and (s[h4+2].i=2))
-                         or ((s[h1].i>0) and (s[h4+2].i<2)) then
-                           ps := channerror
+                    h1 := h1 + sfsize
+                  end;  (* for loop *)
+                  stepcount := 0;
+                  suspend := -h2;
+                  onselect := true;
+                  if wakeup <> 0 then
+                    joineventq(wakeup)
+                end (* sleep on open-guard channels/entries *)
+              end (* no call *)
+              else begin  (* someone is waiting *)
+                wakeup := 0;
+                wakestart := 0;
+                h1 := s[h4].i;  (* h1 points to channel/entry *)
+                if s[h4 + 2].i in [0..2] then begin  (* channel rendezvous *)
+                  if ((s[h1].i < 0) and (s[h4 + 2].i = 2)) or ((s[h1].i > 0) and (s[h4 + 2].i < 2)) then
+                    ps := channerror
+                  else begin  (* rendezvous *)
+                    s[h1].i := abs(s[h1].i);
+                    if s[h4 + 2].i = 0 then
+                      s[s[h1].i] := s[h4 + 1]
+                    else begin  (* block copy *)
+                      h3 := 0;
+                      while h3 < s[h4 + 3].i do begin
+                        if s[h4 + 2].i = 1 then
+                          s[s[h1].i + h3] := s[s[h4 + 1].i + h3]
                         else
-                           begin  (* rendezvous *)
-                           s[h1].i := abs(s[h1].i);
-                           if s[h4+2].i=0 then
-                            s[s[h1].i]:=s[h4+1]
-                           else
-                            begin  (* block copy *)
-                            h3:=0;
-                            while h3<s[h4+3].i do
-                              begin
-                              if s[h4+2].i=1 then
-                                 s[s[h1].i+h3]:=s[s[h4+1].i+h3]
-                              else
-                                 s[s[h4+1].i+h3]:=s[s[h1].i+h3];
-                              h3:=h3+1
-                              end  (* while *)
-                            end;  (* block copy *)
-                           pc:=s[h4+4].i;
-                           repindex  := s[h4+5].i;  (* recover repindex *)
-                           wakenon(h1)  (* wake the other process *)
-                           end  (* rendezvous *)
-                        end  (* channel rendezvous *)
-                     else
-                        pc := s[h4+4].i  (* entry *)
-                     end  (* someone was waiting *)
-                  end;  (* calls to check *)
-               t := t-1 - (h2*sfsize)
-               end;  (* case 64 *)
+                          s[s[h4 + 1].i + h3] := s[s[h1].i + h3];
 
-            65:      (* channel write - gld *)
-               begin
-               h1 := s[t-1].i;   (* h1 now points to channel *)
-               h2 := s[h1].i;   (* h2 now has value in channel[1] *)
-               h3 := s[t].i;   (* base address of source (for ir.x=1) *)
-               if h2>0 then
-                  ps:=channerror  (* another writer on this channel *)
-               else
-                  if h2 = 0 then
-                     begin  (* first *)
-                     if ir.x=0 then s[h1].i:=t else s[h1].i := h3;
-                     s[h1+1].i:=pc;
-                     s[h1+2].i:=curpr;
-                     chans := t-1;
-                     suspend := -1;
-                     stepcount := 0
-                     end  (* first *)
-                  else
-                     begin  (* second *)
-                     h2:=abs(h2);  (* readers leave negated address *)
-                     if ir.x=0 then
-                        s[h2]:=s[t]
-                     else
-                        begin
-                        h4:=0;  (* loop control for block copy *)
-                        while h4 < ir.y do
-                           begin
-                           s[h2 + h4] := s[h3 + h4];
-                           h4 := h4 + 1
-                           end  (* while *)
-                        end;  (* ir.x was 1 *)
-                     wakenon(h1)
-                     end;  (* second *)
-               t := t - 2
-               end;  (* case 65 *)
+                        h3 := h3 + 1
+                      end  (* while *)
+                    end;  (* block copy *)
+                    pc := s[h4 + 4].i;
+                    repindex := s[h4 + 5].i;  (* recover repindex *)
+                    wakenon(h1)  (* wake the other process *)
+                  end  (* rendezvous *)
+                end  (* channel rendezvous *)
+                else
+                  pc := s[h4 + 4].i  (* entry *)
+              end  (* someone was waiting *)
+            end;  (* calls to check *)
+            t := t - 1 - (h2 * sfsize)
+          end;  (* case 64 *)
+          65: begin (* channel write - gld *)
+            h1 := s[t - 1].i;   (* h1 now points to channel *)
+            h2 := s[h1].i;   (* h2 now has value in channel[1] *)
+            h3 := s[t].i;   (* base address of source (for ir.x=1) *)
+            if h2 > 0 then
+              ps := channerror  (* another writer on this channel *)
+            else if h2 = 0 then begin  (* first *)
+              if ir.x = 0 then
+                s[h1].i := t
+              else
+                s[h1].i := h3;
 
-            66:      (*  channel read - gld *)
-               begin
-               h1 := s[t-1].i;
-               h2 := s[h1].i;
-               h3 := s[t].i;
-               if h2<0 then
-                  ps:=channerror
-               else
-                  if h2 = 0 then
-                     begin  (* first *)
-                     s[h1].i := -h3;
-                     s[h1+1].i:=pc;
-                     s[h1+2].i:=curpr;
-                     chans := t-1;
-                     suspend := -1;
-                     stepcount := 0
-                     end  (* first *)
-                  else
-                     begin  (* second *)
-                     h2:=abs(h2);
-                     h4 := 0;
-                     while h4 < ir.y do
-                        begin
-                        s[h3 + h4] := s[h2 + h4];
-                        h4 := h4 + 1
-                        end;
-                     wakenon(h1)
-                     end;
-               t := t - 2
-               end;  (* case 66 *)
-         67:
-               begin (* delay *)
-               h1 := s[t].i;
-               t := t - 1;
-               joinqueue(h1);
-          if curmon <> 0 then
-                releasemon(curmon)
-               end;  (* case 67 *)
-
-
-         68:
-               begin  (* resume *)
-               h1 := s[t].i;
-               t := t - 1;
-               if s[h1].i > 0  then
-                  begin
-                  procwake(h1);
+              s[h1 + 1].i := pc;
+              s[h1 + 2].i := curpr;
+              chans := t - 1;
+              suspend := -1;
+              stepcount := 0
+            end  (* first *)
+            else begin  (* second *)
+              h2 := abs(h2);  (* readers leave negated address *)
+              if ir.x = 0 then
+                s[h2] := s[t]
+              else begin
+                h4 := 0;  (* loop control for block copy *)
+                while h4 < ir.y do begin
+                  s[h2 + h4] := s[h3 + h4];
+                  h4 := h4 + 1
+                end  (* while *)
+              end;  (* ir.x was 1 *)
+              wakenon(h1)
+            end;  (* second *)
+            t := t - 2
+          end;  (* case 65 *)
+          66: begin (*  channel read - gld *)
+            h1 := s[t - 1].i;
+            h2 := s[h1].i;
+            h3 := s[t].i;
+            if h2 < 0 then
+              ps := channerror
+            else if h2 = 0 then begin  (* first *)
+              s[h1].i := -h3;
+              s[h1 + 1].i := pc;
+              s[h1 + 2].i := curpr;
+              chans := t - 1;
+              suspend := -1;
+              stepcount := 0
+            end  (* first *)
+            else begin  (* second *)
+              h2 := abs(h2);
+              h4 := 0;
+              while h4 < ir.y do begin
+                s[h3 + h4] := s[h2 + h4];
+                h4 := h4 + 1
+              end;
+              wakenon(h1)
+            end;
+            t := t - 2
+          end;  (* case 66 *)
+          67: begin (* delay *)
+            h1 := s[t].i;
+            t := t - 1;
+            joinqueue(h1);
             if curmon <> 0 then
-                    joinqueue(curmon+1)
-                  end
-               end;  (* case 68 *)
+              releasemon(curmon)
+          end;  (* case 67 *)
+          68: begin  (* resume *)
+            h1 := s[t].i;
+            t := t - 1;
+            if s[h1].i > 0 then begin
+              procwake(h1);
+              if curmon <> 0 then
+                joinqueue(curmon + 1)
+            end
+          end;  (* case 68 *)
+          69: begin  (* enter monitor *)
+            h1 := s[t].i;  (* address of new monitor variable *)
+            s[t].i := curmon;  (* save old monitor variable *)
+            curmon := h1;
+            if s[curmon].i = 0 then
+              s[curmon].i := -1
+            else
+              joinqueue(curmon)
+          end;  (* case 69 *)
+          70: begin  (* exit monitor *)
+            releasemon(curmon);
+            curmon := s[t].i;
+            t := t - 1
+          end;  (* case 70 *)
+          71: begin  (* execute monitor body code *)
+            t := t + 1;
+            s[t].i := pc;
+            pc := ir.y
+          end;  (* case 70 *)
+          72: begin  (* return from monitor body code *)
+            pc := s[t].i;
+            t := t - 1
+          end;  (* case 72 *)
+          74: (* check lower bound *)
+            if s[t].i < ir.y then
+              ps := bndchk;
+          75: (* check upper bound *)
+            if s[t].i > ir.y then
+              ps := bndchk;
+          78:; (* no operation *)
+          96:; (* pref *)
+          97: begin  (* sleep *)
+            h1 := s[t].i;
+            t := t - 1;
+            if h1 <= 0 then
+              stepcount := 0
+            else
+              joineventq(h1 + sysclock)
+          end;  (* case 97 *)
+          98: begin  (* set process var on process start-up *)
+            h1 := s[t].i;
+            varptr := h1;
+            if s[h1].i = 0 then
+              s[h1].i := curpr
+            else
+              ps := instchk;
 
-         69:
-               begin  (* enter monitor *)
-               h1 := s[t].i;  (* address of new monitor variable *)
-               s[t].i := curmon;  (* save old monitor variable *)
-               curmon := h1;
-               if s[curmon].i = 0 then
-
-                  s[curmon].i := -1
-
-               else
-                  joinqueue(curmon)
-               end;  (* case 69 *)
-         70:
-               begin  (* exit monitor *)
-               releasemon(curmon);
-               curmon := s[t].i;
-               t := t - 1
-               end;  (* case 70 *)
-         71:
-               begin  (* execute monitor body code *)
-               t := t +1;
-               s[t].i := pc;
-               pc := ir.y
-               end;  (* case 70 *)
-         72:
-               begin  (* return from monitor body code *)
-               pc := s[t].i;
-               t := t - 1
-               end;  (* case 72 *)
-
-      74: (* check lower bound *)
-          if s[t].i < ir.y then
-            ps := bndchk;
-
-      75: (* check upper bound *)
-          if s[t].i > ir.y then
-            ps := bndchk;
-
-      78:
-          ;  (* no operation *)
-
-      96:  (* pref *)
-        ;
-
-         97:
-               begin  (* sleep *)
-               h1 := s[t].i;
-               t := t - 1;
-               if h1 <= 0 then
-                  stepcount := 0
-               else
-                  joineventq(h1 + sysclock)
-               end;  (* case 97 *)
-
-         98:
-               begin  (* set process var on process start-up *)
-          h1 := s[t].i;
-          varptr := h1;
-               if s[h1].i = 0 then
-                  s[h1].i := curpr
-               else
-                  ps := instchk;
-               t := t - 1
-               end;
-
-         99:
-               begin  (* ecall *)
-                  h1 := t-ir.y;
-                  t := h1 - 2;
-                  h2 := s[s[h1-1].i].i;  (* h2 has process number *)
-                  if h2 > 0  then
+            t := t - 1
+          end;
+          99: begin  (* ecall *)
+            h1 := t - ir.y;
+            t := h1 - 2;
+            h2 := s[s[h1 - 1].i].i;  (* h2 has process number *)
+            if h2 > 0 then
               if not ptab[h2].active then
                 ps := nexistchk
-              else
-                      begin
-                      h3 := ptab[h2].stackbase+s[h1].i;  (* h3 points to entry *)
-                      if s[h3].i <= 0 then
-                          begin  (* empty queue on entry *)
-                          if s[h3].i < 0 then
-                    begin  (* other process has arrived *)
+              else begin
+                h3 := ptab[h2].stackbase + s[h1].i;  (* h3 points to entry *)
+                if s[h3].i <= 0 then begin  (* empty queue on entry *)
+                  if s[h3].i < 0 then begin  (* other process has arrived *)
                     for h4 := 1 to ir.y do
-                      s[h3+h4+(entrysize-1)] := s[h1+h4];
-                            wakenon(h3)
-                    end;
-                          s[h3+1].i := pc;
-                          s[h3+2].i := curpr
-                          end;
-                      joinqueue(h3);
-                s[t+1].i := h3;
-                      chans := t+1;
-                      suspend := - 1
-                      end
-                  else
-                     if h2 = 0 then
-                        ps := nexistchk
-                     else
-                        ps := namechk
-               end;
+                      s[h3 + h4 + (entrysize - 1)] := s[h1 + h4];
 
-         100:
-               begin    (* acpt1 *)
-                  h1 := s[t].i;    (* h1 points to entry *)
-                  t := t - 1;
-                  if s[h1].i = 0 then
-                     begin  (* no calls - sleep *)
-                     s[h1].i := - 1;
-                     s[h1+1].i := pc;
-                     s[h1+2].i := curpr;
-                     suspend := - 1;
-                     chans := t+1;
-                     stepcount := 0
-                     end
-            else
-              begin  (* another process has arrived *)
-              h2 := s[h1+2].i;  (* hs has proc number *)
-                     h3 := ptab[h2].t + 3;  (* h3 points to first parameter *)
-                     for h4 := 0 to ir.y - 1 do
-
-                        s[h1+h4 + entrysize] := s[h3+h4]
-
+                    wakenon(h3)
+                  end;
+                  s[h3 + 1].i := pc;
+                  s[h3 + 2].i := curpr
+                end;
+                joinqueue(h3);
+                s[t + 1].i := h3;
+                chans := t + 1;
+                suspend := - 1
               end
-               end;
-
-         101:
-
-               begin  (* acpt2 *)
-                  h1 := s[t].i; (* h1 points to entry *)
-                  t := t - 1;
-                  procwake(h1);
-
-                  if s[h1].i <> 0 then
-                     begin  (* queue non-empty *)
-                     h2 := procqueue.proclist[s[h1].i].proc;  (* h2 has proc id *)
-                     s[h1+1].i := ptab[h2].pc;
-                     s[h1+2].i := h2
-                     end
-               end;
-
-         102: (* rep1c *)
-               s[display[ir.x]+ir.y].i := repindex;
-
-      103:  (* rep2c *)
-          begin  (* replicate tail code *)
-          h1 := s[t].i;
-          t := t - 1;
-          s[h1].i := s[h1].i + 1;
-          pc := ir.y
+            else if h2 = 0 then
+              ps := nexistchk
+            else
+              ps := namechk
           end;
-
-      104:  (* powr2 *)
-
-          begin
-          h1 := s[t].i;
-          if not (h1 in [0..bsmsb]) then
-            ps := setchk
-          else
-            s[t].bs := [h1]
-          end;  (* 104 *)
-
-      105:  (* btest *)
-          begin
-          t := t - 1;
-          h1 := s[t].i;
-          if not (h1 in [0..bsmsb]) then
-            ps := setchk
-          else
-            s[t].i := btoi(h1 in s[t+1].bs)
-          end;  (* 105 *)
-
-      107:  (* write based *)
-          begin
-          h3 := s[t].i;
-          h1 := s[t-1].i;
-          t := t - 2;
-          if h3 = 8 then
-
-
-            write(h1:11:8)
-
-
-          else
-
-
-            write(h1:8:16)
-
-
-          end;  (* 107 *)
-
-
-      112:
-          begin
-          t := t - 1;
-          s[t].i := btoi(s[t].bs = s[t+1].bs)
-          end;  (* 112 *)
-
-      113:
-          begin
-          t := t - 1;
-          s[t].i := btoi(s[t].bs <> s[t+1].bs)
-          end;  (* 113 *)
-
-      114:
-          begin
-          t := t - 1;
-          s[t].i := btoi(s[t].bs < s[t+1].bs)
-          end;  (* 114 *)
-
-      115:
-
-          begin
-          t := t - 1;
-          s[t].i := btoi(s[t].bs <= s[t+1].bs)
-          end;  (* 115 *)
-
-
-      116:
-          begin
-          t := t - 1;
-          s[t].i := btoi(s[t].bs > s[t+1].bs)
-          end;  (* 116 *)
-
-      117:
-          begin
-          t := t - 1;
-          s[t].i := btoi(s[t].bs >= s[t+1].bs)
-          end;  (* 117 *)
-
-      118:
-          begin
-          t := t - 1;
-          s[t].bs := s[t].bs + s[t+1].bs
-          end;  (* 118 *)
-
-      119:
-          begin
-          t := t - 1;
-          s[t].bs := s[t].bs - s[t+1].bs
-          end;  (* 119 *)
-
-      120:
-          begin
-          t := t - 1;
-          s[t].bs := s[t].bs * s[t+1].bs
-          end;  (* 120 *)
-      121:  (* sinit *)
-          if curpr <> 0 then
-            ps := seminitchk
-          else
-            begin
-            s[s[t-1].i] := s[t];
-            t := t - 2
-            end;
-
-      129:
-          begin (* prtjmp *)
-          if s[curmon+2].i = 0 then
+          100: begin    (* acpt1 *)
+            h1 := s[t].i;    (* h1 points to entry *)
+            t := t - 1;
+            if s[h1].i = 0 then begin  (* no calls - sleep *)
+              s[h1].i := -1;
+              s[h1 + 1].i := pc;
+              s[h1 + 2].i := curpr;
+              suspend := -1;
+              chans := t + 1;
+              stepcount := 0
+            end
+            else begin  (* another process has arrived *)
+              h2 := s[h1 + 2].i;  (* hs has proc number *)
+              h3 := ptab[h2].t + 3;  (* h3 points to first parameter *)
+              for h4 := 0 to ir.y - 1 do
+                s[h1 + h4 + entrysize] := s[h3 + h4]
+            end
+          end;
+          101: begin  (* acpt2 *)
+            h1 := s[t].i; (* h1 points to entry *)
+            t := t - 1;
+            procwake(h1);
+            if s[h1].i <> 0 then begin  (* queue non-empty *)
+              h2 := procqueue.proclist[s[h1].i].proc;  (* h2 has proc id *)
+              s[h1 + 1].i := ptab[h2].pc;
+              s[h1 + 2].i := h2
+            end
+          end;
+          102: s[display[ir.x] + ir.y].i := repindex; (* rep1c *)
+          103: begin (* rep2c *) (* replicate tail code *)
+            h1 := s[t].i;
+            t := t - 1;
+            s[h1].i := s[h1].i + 1;
             pc := ir.y
           end;
-      130:
-          begin (* prtsel *)
-               h1 := t;
-               h2 := 0;
-          foundcall := false;
-               while s[h1].i <> -1 do
-                  begin
-                  h1 := h1 - 1;
-                  h2 := h2 + 1
-                  end;  (* h2 is now the number of open guards *)
-          if h2 <> 0 then
-            begin  (* barriers to check *)
-                  h3 := trunc(random*h2);  (* arbitrary choice *)
-            h4 := 0;  (* count of barriers tested *)
-                  while not foundcall and (h4 <  h2) do
-                      begin
-              if s[s[h1 + h3 + 1].i].i <> 0 then
-                foundcall := true
-              else
-                begin
-                      h3 := (h3+1) mod h2;
-                      h4 := h4 + 1
+          104: begin (* powr2 *)
+            h1 := s[t].i;
+            if not (h1 in [0..bsmsb]) then
+              ps := setchk
+            else
+              s[t].bs := [h1]
+          end;  (* 104 *)
+          105: begin (* btest *)
+            t := t - 1;
+            h1 := s[t].i;
+            if not (h1 in [0..bsmsb]) then
+              ps := setchk
+            else
+              s[t].i := btoi(h1 in s[t + 1].bs)
+          end;  (* 105 *)
+          107: begin (* write based *)
+            h3 := s[t].i;
+            h1 := s[t - 1].i;
+            t := t - 2;
+            if h3 = 8 then
+              write(h1:11:8)
+            else
+              write(h1:8:16)
+          end;  (* 107 *)
+          112: begin
+            t := t - 1;
+            s[t].i := btoi(s[t].bs = s[t + 1].bs)
+          end;  (* 112 *)
+          113: begin
+            t := t - 1;
+            s[t].i := btoi(s[t].bs <> s[t + 1].bs)
+          end;  (* 113 *)
+          114: begin
+            t := t - 1;
+            s[t].i := btoi(s[t].bs < s[t + 1].bs)
+          end;  (* 114 *)
+          115: begin
+            t := t - 1;
+            s[t].i := btoi(s[t].bs <= s[t + 1].bs)
+          end;  (* 115 *)
+          116: begin
+            t := t - 1;
+            s[t].i := btoi(s[t].bs > s[t + 1].bs)
+          end;  (* 116 *)
+          117: begin
+            t := t - 1;
+            s[t].i := btoi(s[t].bs >= s[t + 1].bs)
+          end;  (* 117 *)
+          118: begin
+            t := t - 1;
+            s[t].bs := s[t].bs + s[t + 1].bs
+          end;  (* 118 *)
+          119: begin
+            t := t - 1;
+            s[t].bs := s[t].bs - s[t + 1].bs
+          end;  (* 119 *)
+          120: begin
+            t := t - 1;
+            s[t].bs := s[t].bs * s[t + 1].bs
+          end;  (* 120 *)
+          121: (* sinit *)
+            if curpr <> 0 then
+              ps := seminitchk
+            else begin
+              s[s[t - 1].i] := s[t];
+              t := t - 2
+            end;
+          129: begin (* prtjmp *)
+            if s[curmon + 2].i = 0 then
+              pc := ir.y
+          end;
+          130: begin (* prtsel *)
+            h1 := t;
+            h2 := 0;
+            foundcall := false;
+            while s[h1].i <> -1 do begin
+              h1 := h1 - 1;
+              h2 := h2 + 1
+            end;  (* h2 is now the number of open guards *)
+            if h2 <> 0 then begin  (* barriers to check *)
+              h3 := trunc(random * h2);  (* arbitrary choice *)
+              h4 := 0;  (* count of barriers tested *)
+              while not foundcall and (h4 < h2) do begin
+                if s[s[h1 + h3 + 1].i].i <> 0 then
+                  foundcall := true
+                else begin
+                  h3 := (h3 + 1) mod h2;
+                  h4 := h4 + 1
                 end
               end;
             end;  (* barriers to check *)
-          if not foundcall then
-            releasemon(curmon)
-          else
-            begin
-            h3 := s[h1 + h3 +1].i;
-            procwake(h3)
+            if not foundcall then
+              releasemon(curmon)
+            else begin
+              h3 := s[h1 + h3 +1].i;
+              procwake(h3)
             end;
-          t := h1 - 1;
-          s[curmon+2].i := 0;
-          pc := s[t].i;
-          t := t - 1
+            t := h1 - 1;
+            s[curmon + 2].i := 0;
+            pc := s[t].i;
+            t := t - 1
           end;
-      131:
-          begin (* prtslp *)
-               h1 := s[t].i;
-               t := t - 1;
-               joinqueue(h1)
+          131: begin (* prtslp *)
+            h1 := s[t].i;
+            t := t - 1;
+            joinqueue(h1)
           end;
-      132:
-          begin (* prtex *)
-          if ir.x = 0 then
-            clearresource := true
-          else
-            clearresource := false;
-          curmon := s[t].i;
-          t := t - 1
-          end;
-      133:  (* prtcnd *)
-          if clearresource then
-            begin
-            s[curmon+2].i := 1;
-            t := t + 1;
-            s[t].i := pc;
-            t := t + 1;
-            s[t].i := -1;
-            pc := ir.y
-            end
+          132: begin (* prtex *)
+            if ir.x = 0 then
+              clearresource := true
+            else
+              clearresource := false;
 
-         end  (*case*);
+            curmon := s[t].i;
+            t := t - 1
+          end;
+          133: (* prtcnd *)
+            if clearresource then begin
+              s[curmon + 2].i := 1;
+              t := t + 1;
+              s[t].i := pc;
+              t := t + 1;
+              s[t].i := -1;
+              pc := ir.y
+            end
+        end  (*case*);
 
       checkclock;
+      if eventqueue.first <> nil then
+        if eventqueue.time <= sysclock then
+          alarmclock;
 
-         if eventqueue.first <> nil then
-            if eventqueue.time <= sysclock then
-               alarmclock;
-         statcounter := statcounter + 1;;
-         if statcounter >= statmax then
-            ps := statchk
-      until ps <> run;
-
-      98: writeln;
-      if ps <> fin then
-
-         expmd
-
-      else
-         begin
-         writeln;
-         writeln('Program terminated normally')
-         end;
-      97: writeln
+      statcounter := statcounter + 1;
+      if statcounter >= statmax then
+        ps := statchk
+    until ps <> run;
+98:
+    writeln;
+    if ps <> fin then
+      expmd
+    else begin
+      writeln;
+      writeln('Program terminated normally')
+    end;
+97:
+    writeln
   end;  (* runprog *)
 
 begin  (* Main *)
