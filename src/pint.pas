@@ -210,9 +210,6 @@ program pint(objfile, pmdfile, input, output);
         reals: (r: real)
     end;
 
-    (* This type is declared within the GCP Run Time System *)
-    UnixTimeType = LongInt;
-
   var
     objfile: file of objcoderec;
     pmdfile: text;
@@ -251,8 +248,8 @@ program pint(objfile, pmdfile, input, output);
     statcounter: 0..maxint;
     sysclock: 0..maxint;
 
-    (* I declare them to be UnixTimeType (lognints) *)
-    now, last: UnixTimeType;
+    (* I declare them to be UnixTimeType (longints) *)
+    NowTime, LastTime: longint;
     procqueue: record
       proclist: array[1..pmax] of
         record
@@ -641,29 +638,17 @@ program pint(objfile, pmdfile, input, output);
   end; (* expmd *)
 
   (* real-time clock management module *)
-  { Get the real time. MicroSecond can be Null and is ignored then. }
-  function GetUnixTime(var MicroSecond: Integer): UnixTimeType; asmname '_p_GetUnixTime';
-
   procedure initclock;
-
-    var
-      microsecs: integer;
-
   begin
-    microsecs := 0;
     sysclock := 0;
-    last := GetUnixTime(microsecs)
+    LastTime := DateTimeToTimeStamp(Now).time
   end;  (* initclock *)
 
   procedure checkclock;
-
-    var
-      microsecs: integer;
-
   begin
-    now := GetUnixTime(microsecs);
-    if now <> last then begin
-      last := now;
+    NowTime := DateTimeToTimeStamp(Now).time;
+    if NowTime <> LastTime then begin
+      LastTime := NowTime;
       sysclock := sysclock + 1
     end
   end;  (* checkclock *)
@@ -678,6 +663,9 @@ program pint(objfile, pmdfile, input, output);
   procedure runprog;
 
     label 97, 98;
+
+    var
+      h1r: real;
 
     (* place pnum in a dynamic queue node *)
     procedure getqueuenode(pnum: ptype; var ptr: qpointer);
@@ -1759,7 +1747,7 @@ program pint(objfile, pmdfile, input, output);
           35: s[t].i := btoi(not (itob(s[t].i)));
           36: s[t].i := -s[t].i;
           37: begin (* formatted reals output *)
-            h3 := s[t-1].i;
+            h3 := s[t - 1].i;
             h4 := s[t].i;
             write(s[t - 2].r:h3:h4);
             t := t - 3
@@ -1844,7 +1832,7 @@ program pint(objfile, pmdfile, input, output);
               if (realmax - abs(s[t].r)) < abs(s[t + 1].r) then
                 ps := ovchk;
 
-            if ps <>  ovchk then
+            if ps <> ovchk then
               s[t].r := s[t].r + s[t + 1].r
           end;
           55: begin
@@ -1853,7 +1841,7 @@ program pint(objfile, pmdfile, input, output);
               if (realmax - abs(s[t].r)) < abs(s[t + 1].r) then
                 ps := ovchk;
 
-            if ps <>  ovchk then
+            if ps <> ovchk then
               s[t].r := s[t].r - s[t + 1].r
           end;
           56: begin
@@ -1878,7 +1866,7 @@ program pint(objfile, pmdfile, input, output);
           end;
           59: begin
             t := t - 1;
-            if s[t+1].i = 0 then
+            if s[t + 1].i = 0 then
               ps := divchk
             else
               s[t].i := s[t].i mod s[t + 1].i;
@@ -1886,7 +1874,7 @@ program pint(objfile, pmdfile, input, output);
           60: begin
             t := t - 1;
             if (abs(s[t].r) > 1.0) and (abs(s[t + 1].r) > 1.0) then
-              if (realmax/abs(s[t].r)) < abs(s[t + 1].r) then
+              if (realmax / abs(s[t].r)) < abs(s[t + 1].r) then
                 ps := ovchk;
 
             if ps <> ovchk then
@@ -2019,8 +2007,8 @@ program pint(objfile, pmdfile, input, output);
           end;  (* case 64 *)
           65: begin (* channel write - gld *)
             h1 := s[t - 1].i;   (* h1 now points to channel *)
-            h2 := s[h1].i;   (* h2 now has value in channel[1] *)
-            h3 := s[t].i;   (* base address of source (for ir.x=1) *)
+            h2 := s[h1].i;   (* h2 now has value in channel[h1] *)
+            h3 := s[t].i;   (* base address of source (for ir.x = 1) *)
             if h2 > 0 then
               ps := channerror  (* another writer on this channel *)
             else if h2 = 0 then begin  (* first *)
@@ -2050,7 +2038,7 @@ program pint(objfile, pmdfile, input, output);
             end;  (* second *)
             t := t - 2
           end;  (* case 65 *)
-          66: begin (*  channel read - gld *)
+          66: begin (* channel read - gld *)
             h1 := s[t - 1].i;
             h2 := s[h1].i;
             h3 := s[t].i;
@@ -2162,7 +2150,7 @@ program pint(objfile, pmdfile, input, output);
                 joinqueue(h3);
                 s[t + 1].i := h3;
                 chans := t + 1;
-                suspend := - 1
+                suspend := -1
               end
             else if h2 = 0 then
               ps := nexistchk
@@ -2221,12 +2209,13 @@ program pint(objfile, pmdfile, input, output);
           end;  (* 105 *)
           107: begin (* write based *)
             h3 := s[t].i;
-            h1 := s[t - 1].i;
+            h1 := s[t - 1].i; // h1 does not seem to be used for this opcode command, find out if it affects any other part of the code
+            h1r := s[t - 1].r;
             t := t - 2;
             if h3 = 8 then
-              write(h1:11:8)
+              write(h1r:11:8)
             else
-              write(h1:8:16)
+              write(h1r:8:16)
           end;  (* 107 *)
           112: begin
             t := t - 1;
@@ -2238,7 +2227,8 @@ program pint(objfile, pmdfile, input, output);
           end;  (* 113 *)
           114: begin
             t := t - 1;
-            s[t].i := btoi(s[t].bs < s[t + 1].bs)
+            //s[t].i := btoi(s[t].bs < s[t + 1].bs) // currently with the -Miso command, fpc does not like this, when I convert this program to a different standard, revert the comment
+            s[t].i := btoi((s[t].bs <= s[t + 1].bs) and (s[t].bs <> s[t + 1].bs))
           end;  (* 114 *)
           115: begin
             t := t - 1;
@@ -2246,7 +2236,8 @@ program pint(objfile, pmdfile, input, output);
           end;  (* 115 *)
           116: begin
             t := t - 1;
-            s[t].i := btoi(s[t].bs > s[t + 1].bs)
+            //s[t].i := btoi(s[t].bs > s[t + 1].bs) // currently with the -Miso command, fpc does not like this, when I convert this program to a different standard, revert the comment
+            s[t].i := btoi((s[t].bs >= s[t + 1].bs) and (s[t].bs <> s[t + 1].bs))
           end;  (* 116 *)
           117: begin
             t := t - 1;
@@ -2298,7 +2289,7 @@ program pint(objfile, pmdfile, input, output);
             if not foundcall then
               releasemon(curmon)
             else begin
-              h3 := s[h1 + h3 +1].i;
+              h3 := s[h1 + h3 + 1].i;
               procwake(h3)
             end;
             t := h1 - 1;
