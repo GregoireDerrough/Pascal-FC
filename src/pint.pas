@@ -484,24 +484,24 @@ program pint(objfile, pmdfile, input, output);
     end;
     write(tofile, 'Reason:   ');
     case ps of
-      deadlock: writeln(tofile, 'deadlock');
-      divchk: writeln(tofile, 'division by 0');
-      inxchk: writeln(tofile, 'invalid index ');
-      charchk: writeln(tofile, 'illegal or uninitialised character');
-      stkchk: writeln(tofile, 'storage overflow');
-      redchk: writeln(tofile, 'reading past end of file');
+      deadlock:   writeln(tofile, 'deadlock');
+      divchk:     writeln(tofile, 'division by 0');
+      inxchk:     writeln(tofile, 'invalid index ');
+      charchk:    writeln(tofile, 'illegal or uninitialised character');
+      stkchk:     writeln(tofile, 'storage overflow');
+      redchk:     writeln(tofile, 'reading past end of file');
       channerror: writeln(tofile, 'channel error');
-      guardchk: writeln(tofile, 'closed guards');
-      procnchk: writeln(tofile, 'more than ', pmax:1, ' processes');
-      statchk: writeln(tofile, 'statement limit of ', statmax:1, ' reached (possible livelock)');
-      nexistchk: writeln(tofile, 'attempt to call entry of non-existent/terminated process');
-      namechk: writeln(tofile, 'attempt to make entry on process without unique name');
-      casechk: writeln(tofile, 'label of ', s[ptab[curpr].t].i:1, ' not found in case');
-      bndchk: writeln(tofile, 'ordinal value out of range');
-      instchk: writeln(tofile, 'multiple activation of a process');
-      inpchk: writeln(tofile, 'error in numeric input');
-      setchk: writeln(tofile, 'bitset value out of bounds');
-      ovchk: writeln(tofile, 'arithmetic overflow');
+      guardchk:   writeln(tofile, 'closed guards');
+      procnchk:   writeln(tofile, 'more than ', pmax:1, ' processes');
+      statchk:    writeln(tofile, 'statement limit of ', statmax:1, ' reached (possible livelock)');
+      nexistchk:  writeln(tofile, 'attempt to call entry of non-existent/terminated process');
+      namechk:    writeln(tofile, 'attempt to make entry on process without unique name');
+      casechk:    writeln(tofile, 'label of ', s[ptab[curpr].t].i:1, ' not found in case');
+      bndchk:     writeln(tofile, 'ordinal value out of range');
+      instchk:    writeln(tofile, 'multiple activation of a process');
+      inpchk:     writeln(tofile, 'error in numeric input');
+      setchk:     writeln(tofile, 'bitset value out of bounds');
+      ovchk:      writeln(tofile, 'arithmetic overflow');
       seminitchk: writeln(tofile, 'attempt to initialise semaphore from process')
     end;  (* case *)
     writeln(tofile);
@@ -516,9 +516,9 @@ program pint(objfile, pmdfile, input, output);
       monvars,
       protvars: writeln(tofile);
       channels: writeln(tofile, ' (channel)');
-      entrys: writeln(tofile, ' (entry)');
+      entrys:   writeln(tofile, ' (entry)');
       procs:;
-      protq: writeln(tofile, ' (procedure guard)')
+      protq:    writeln(tofile, ' (procedure guard)')
     end
   end;  (* printyp *)
 

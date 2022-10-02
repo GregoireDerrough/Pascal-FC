@@ -113,7 +113,7 @@ program pfccomp(progfile, listfile, objfile, input, output);
       prtjmp, prtsel, prtslp, prtcnd
     );
     index = -xmax..xmax;
-    alfa = packed array [1..alng] of char;
+    alfa = packed array[1..alng] of char;
     objekt = (
       konstant, variable, type1, prozedure, funktion,
       monproc, address, grdproc, xgrdproc
@@ -125,7 +125,7 @@ program pfccomp(progfile, listfile, objfile, input, output);
       enums, bitsets, protvars, protq
     );
     typset = set of types;
-    fnametype = packed array [1..30] of char;
+    fnametype = packed array[1..30] of char;
     order = packed record
       f:      opcode;
       x:      -lmax..+lmax;
@@ -133,14 +133,14 @@ program pfccomp(progfile, listfile, objfile, input, output);
       instyp: types;
       line:   integer
     end;
-    orderarray = array [0..cmax] of order;
+    orderarray = array[0..cmax] of order;
     objorder = packed record
       f: 0..omax;
       x: -lmax..lmax;
       y: integer;
       l: integer
     end;
-    objorderarray = array [0..cmax] of objorder;
+    objorderarray = array[0..cmax] of objorder;
     tabrec = packed record
       name:   alfa;
       link:   index;
@@ -152,19 +152,19 @@ program pfccomp(progfile, listfile, objfile, input, output);
       taddr:  integer;
       auxref: index
     end;
-    tabarray = array [0..tmax] of tabrec;
+    tabarray = array[0..tmax] of tabrec;
     atabrec = packed record
       inxtyp, eltyp: types;
       inxref, elref, low, high, elsize, size: index;
     end;
-    atabarray = array [1..amax] of atabrec;
+    atabarray = array[1..amax] of atabrec;
     btabrec = packed record
       last, lastpar, psize, vsize: index;
       tabptr: 0..tmax
     end;
-    btabarray = array [1..bmax] of btabrec;
-    stabarray = packed array [0..smax] of char;
-    realarray = array [1..rmax] of real;
+    btabarray = array[1..bmax] of btabrec;
+    stabarray = packed array[0..smax] of char;
+    realarray = array[1..rmax] of real;
     intabrec = packed record
       tp:     types;
       lv:     0..lmax;
@@ -173,7 +173,7 @@ program pfccomp(progfile, listfile, objfile, input, output);
       off:    integer;
       tabref: integer
     end;
-    intabarray = array [1..intermax] of intabrec;
+    intabarray = array[1..intermax] of intabrec;
 
     (* unixtypes.i *)
     (* Pascal-FC "universal" compiler system *)
@@ -202,7 +202,7 @@ program pfccomp(progfile, listfile, objfile, input, output);
     progname: alfa;
     lc, t, a, b, sx: integer;
     stantyps: typset;
-    display: array [0..lmax] of integer;
+    display: array[0..lmax] of integer;
     tab: tabarray;
     atab: atabarray;
     btab: btabarray;
@@ -283,29 +283,29 @@ program pfccomp(progfile, listfile, objfile, input, output);
       inum: integer;
       sleng: integer;
       ch: char;
-      line: array [1..llng] of char;
+      line: array[1..llng] of char;
       cc: integer;
       ll: integer;
       errs: set of er;
       errpos: integer;
       skipflag: boolean;
       constbegsys, typebegsys, blockbegsys, facbegsys, statbegsys: symset;
-      keywords: array [1..nkw] of keytabrec;
-      sps: array [char] of symbol;
-      chantab: array [1..chanmax] of
+      keywords: array[1..nkw] of keytabrec;
+      sps: array[char] of symbol;
+      chantab: array[1..chanmax] of
         packed record
           eltyp: types;
           elref, elsize: index
         end;  (* chantab *)
       chan: 0..chanmax;              (* index to chantab  *)
-      capsproctab: array [1..maxcapsprocs] of
+      capsproctab: array[1..maxcapsprocs] of
         record
           name: alfa;
           foundec: boolean
         end;
       montab: record
         n: 0..maxmons;
-        startadds: array [1..maxmons] of integer
+        startadds: array[1..maxmons] of integer
       end;
       ncapsprocs: 0..maxcapsprocs;
       curcaps: 0..tmax;
@@ -318,7 +318,7 @@ program pfccomp(progfile, listfile, objfile, input, output);
       et: integer;
       labelnum: integer;
       internalnum:  integer;
-      bounds: array [1..etmax] of
+      bounds: array[1..etmax] of
         record
           upper, lower: integer
         end;
@@ -521,7 +521,7 @@ program pfccomp(progfile, listfile, objfile, input, output);
     procedure fatal(n: integer);
 
       var
-        msg: array [1..20] of alfa;
+        msg: array[1..20] of alfa;
 
     begin
       writeln(listfile);
@@ -646,7 +646,7 @@ program pfccomp(progfile, listfile, objfile, input, output);
 
       var
         i, j, k, l: integer;
-        digitbuff: array [1..maxdigits] of char;
+        digitbuff: array[1..maxdigits] of char;
 
       procedure collectint;
       begin
@@ -5430,115 +5430,122 @@ program pfccomp(progfile, listfile, objfile, input, output);
                 ints,
                 bools,
                 chars,
-                enums:  gen(47,0,0);
-                reals:  gen(41,0,0);
-                bitsets:  gen(114,0,0)
+                enums:   gen(47, 0, 0);
+                reals:   gen(41, 0, 0);
+                bitsets: gen(114, 0, 0)
               end;
-            relle:  case instyp of
-                    notyp,
-                    ints,
-                    bools,
-                    chars,
-                    enums:  gen(48,0,0);
-                    reals:  gen(42,0,0);
-                    bitsets:  gen(115,0,0)
-                  end;
-            relgt:  case instyp of
-                    notyp,
-                    ints,
-                    bools,
-                    chars,
-                    enums:  gen(49,0,0);
-                    reals:  gen(43,0,0);
-                    bitsets:  gen(116,0,0)
-                  end;
-            relge:  case instyp of
-                    notyp,
-                    ints,
-                    bools,
-                    chars,
-                    enums:  gen(50,0,0);
-                    reals:  gen(44,0,0);
-                    bitsets:  gen(117,0,0)
-                  end;
-            orop:   if instyp = bools then
-                      gen(51,0,0)
-                  else
-                    gen(118,0,0);
-            add:    if instyp = ints then
-                    gen(52,0,0)
-                  else
-                    gen(54,0,0);
-            sub:    if instyp = ints then
-                    gen(53,0,0)
-                  else
-                    if instyp = reals then
-                      gen(55,0,0)
-                    else
-                      gen(119,0,0);
-            andop:  if instyp = bools then
-                    gen(56,0,0)
-                  else
-                    gen(120,0,0);
-            mul:    if instyp = ints then
-                    gen(57,0,0)
-                  else
-                    gen(60,0,0);
-            divop:  if instyp = ints then
-                    gen(58,0,0)
-                  else
-                    gen(61,0,0);
-            modop:  gen(59,0,0);
-            rdlin:  gen(62,0,0);
-            wrlin:  gen(63,0,0);
-            selec0: gen(64,x,y);
+            relle:
+              case instyp of
+                notyp,
+                ints,
+                bools,
+                chars,
+                enums:   gen(48, 0, 0);
+                reals:   gen(42, 0, 0);
+                bitsets: gen(115, 0, 0)
+              end;
+            relgt:
+              case instyp of
+                notyp,
+                ints,
+                bools,
+                chars,
+                enums:   gen(49, 0, 0);
+                reals:   gen(43, 0, 0);
+                bitsets: gen(116, 0, 0)
+              end;
+            relge:
+              case instyp of
+                notyp,
+                ints,
+                bools,
+                chars,
+                enums:   gen(50, 0, 0);
+                reals:   gen(44, 0, 0);
+                bitsets: gen(117, 0, 0)
+              end;
+            orop:
+              if instyp = bools then
+                gen(51, 0, 0)
+              else
+                gen(118, 0, 0);
+            add:
+              if instyp = ints then
+                gen(52, 0, 0)
+              else
+                gen(54, 0, 0);
+            sub:
+              if instyp = ints then
+                gen(53, 0, 0)
+              else if instyp = reals then
+                gen(55, 0, 0)
+              else
+                gen(119, 0, 0);
+            andop:
+              if instyp = bools then
+                gen(56, 0, 0)
+              else
+                gen(120, 0, 0);
+            mul:
+              if instyp = ints then
+                gen(57, 0, 0)
+              else
+                gen(60, 0, 0);
+            divop:
+              if instyp = ints then
+                gen(58, 0, 0)
+              else
+                gen(61, 0, 0);
+            modop:  gen(59, 0, 0);
+            rdlin:  gen(62, 0, 0);
+            wrlin:  gen(63, 0, 0);
+            selec0: gen(64, x, y);
             selec1:
-                  case x of
-                    0:    gen(24,0,-1);
-                    3,
-                    4,
-                    5:    gen(24,0,y)
-                  end;
-            chanwr: if instyp in [ints,bools,chars,reals,
-                            enums,bitsets] then
-                    gen(65,0,y)
-                  else
-                    gen(65,1,y);
-            chanrd: gen(66,0,y);
-            delay:  gen(67,x,y);
-            resum:  gen(68,x,y);
-            enmon:  gen(69,x,y);
-            exmon:  gen(70,x,y);
-            mexec:  gen(71,x,y);
-            mretn:  gen(72,x,y);
-            lobnd:
-                  gen(74,0,y);
-            hibnd:
-                  gen(75,0,y);
+              case x of
+                0: gen(24, 0, -1);
+                3,
+                4,
+                5: gen(24, 0, y)
+              end;
+            chanwr:
+              if instyp in [ints, bools, chars, reals, enums, bitsets] then
+                gen(65, 0, y)
+              else
+                gen(65, 1, y);
+            chanrd: gen(66, 0, y);
+            delay:  gen(67, x, y);
+            resum:  gen(68, x, y);
+            enmon:  gen(69, x, y);
+            exmon:  gen(70, x, y);
+            mexec:  gen(71, x, y);
+            mretn:  gen(72, x, y);
+            lobnd:  gen(74, 0, y);
+            hibnd:  gen(75, 0, y);
             slabl,
             blokk,
-            param:  gen(78,0,0);
-            pref:   begin
-                  gen(96,0,0);
-                  writeln('w - priorities not implemented')
-                  end;
-            sleap:  gen(97,0,0);
-            procv:  gen(98,0,0);
-            ecall:  gen(99,0,y);
-            acpt1:  gen(100,0,y);
-            acpt2:  gen(101,0,y);
-            rep1c:  gen(102,x,y);
-            rep2c:  gen(103,0,y);
-            power2: gen(104,0,0);
-            btest:  gen(105,0,0);
-            enmap:  gen(106,0,y);
-            sinit:  gen(121,0,0);
-            prtjmp: gen(129,0,y);
-            prtsel:   gen(130,0,0);
-            prtslp: gen(131,0,0);
-            prtex:  gen(132,x,0);
-            prtcnd: gen(133,0,y)
-          end;  (* case *);
+            param:  gen(78, 0, 0);
+            pref: begin
+              gen(96, 0, 0);
+              writeln('w - priorities not implemented')
+            end;
+            sleap:  gen(97, 0, 0);
+            procv:  gen(98, 0, 0);
+            ecall:  gen(99, 0, y);
+            acpt1:  gen(100, 0, y);
+            acpt2:  gen(101, 0, y);
+            rep1c:  gen(102, x, y);
+            rep2c:  gen(103, 0, y);
+            power2: gen(104, 0, 0);
+            btest:  gen(105, 0, 0);
+            enmap:  gen(106, 0, y);
+            sinit:  gen(121, 0, 0);
+            prtjmp: gen(129, 0, y);
+            prtsel: gen(130, 0, 0);
+            prtslp: gen(131, 0, 0);
+            prtex:  gen(132, x, 0);
+            prtcnd: gen(133, 0, y)
+          end;  (* case *)
+
       objfile^.ngencode := lc - 1
     end;  (* putcode *)
 
