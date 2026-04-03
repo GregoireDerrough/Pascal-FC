@@ -1,0 +1,11 @@
+
+# text files, with some specific diff display
+*.pfc text diff = text # until a custom diff driver is implemented, treat the Pascal-FC example files as text
+*.pas text diff = pascal
+
+# keep .bat files in CRLF line ending, for windows
+*.bat text eol = crlf
+
+# binary files, post compile
+*.o binary
+*.exe binary
