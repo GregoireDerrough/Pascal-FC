@@ -26,11 +26,11 @@ program pcada;
         count := count - 1;
         nextout := (nextout + 1) mod (buffmax + 1);
       or when count <= buffmax =>
-        accept put(ch: char)  do
+        accept put(ch: char) do
           store[nextin] := ch;
 
         count := count + 1;
-        nextin := (nextin + 1) mod (buffmax + 1 );
+        nextin := (nextin + 1) mod (buffmax + 1);
       or
         terminate
       end  (* select *)
